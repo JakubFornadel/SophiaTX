@@ -601,14 +601,10 @@ map< uint32_t, condenser_api::api_operation_object > alexandria_api::get_account
 #endif
 
 
-annotated_signed_transaction alexandria_api::broadcast_transaction(signed_transaction tx) const
+void alexandria_api::broadcast_transaction(signed_transaction tx) const
 {
    try {
-      auto result = my->_remote_api->broadcast_transaction_synchronous( tx );
-      annotated_signed_transaction rtrx(tx);
-      rtrx.block_num = result.block_num;
-      rtrx.transaction_num = result.trx_num;
-      return rtrx;
+      my->_remote_api->broadcast_transaction( tx );
     }FC_CAPTURE_AND_RETHROW((tx))
 }
 
@@ -737,16 +733,16 @@ fc::ecc::compact_signature alexandria_api::sign_digest(digest_type digest, strin
    }FC_CAPTURE_AND_RETHROW((digest)(pk))
 }
 
-annotated_signed_transaction alexandria_api::send_and_sign_operation(operation op, string pk) {
+void alexandria_api::send_and_sign_operation(operation op, string pk) {
    try{
        signed_transaction tx = create_simple_transaction(op);
-       return broadcast_transaction(add_signature(tx, sign_digest(get_transaction_digest(tx), pk)));
+       broadcast_transaction(add_signature(tx, sign_digest(get_transaction_digest(tx), pk)));
    }FC_CAPTURE_AND_RETHROW((op)(pk))
 }
 
-annotated_signed_transaction alexandria_api::send_and_sign_transaction(signed_transaction tx, string pk){
+void alexandria_api::send_and_sign_transaction(signed_transaction tx, string pk){
    try{
-      return broadcast_transaction(add_signature(tx, sign_digest(get_transaction_digest(tx), pk)));
+      broadcast_transaction(add_signature(tx, sign_digest(get_transaction_digest(tx), pk)));
    }FC_CAPTURE_AND_RETHROW((tx)(pk))
 }
 

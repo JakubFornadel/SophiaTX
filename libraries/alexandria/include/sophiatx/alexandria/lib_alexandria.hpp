@@ -378,7 +378,7 @@ class alexandria_api
        * @param tx Signed transaction to be broadcasts
        * @return transaction with block information
        */
-      annotated_signed_transaction broadcast_transaction(signed_transaction tx) const;
+      void broadcast_transaction(signed_transaction tx) const;
 
       /**
        * Creating single operation form vector of operations
@@ -443,14 +443,14 @@ class alexandria_api
        * @param op - operation to be send
        * @param pk - private key for signing
        */
-      annotated_signed_transaction send_and_sign_operation(operation op, string pk);
+      void send_and_sign_operation(operation op, string pk);
 
       /**
        * This function will sign and broadcast transaction
        * @param tx - transaction to be send
        * @param pk - private key for signing
        */
-      annotated_signed_transaction send_and_sign_transaction(signed_transaction tx, string pk);
+      void send_and_sign_transaction(signed_transaction tx, string pk);
 
       /**
        * Verify signature
