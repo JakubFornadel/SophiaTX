@@ -18,6 +18,8 @@
 
 #include <sophiatx/plugins/database_api/database_api_plugin.hpp>
 
+#include <sophiatx/plugins/alexandria_api/alexandria_api_plugin.hpp>
+
 #include <sophiatx/plugins/chain_api/chain_api_plugin.hpp>
 
 #include <sophiatx/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
@@ -65,6 +67,8 @@ void register_plugins()
    appbase::app().register_plugin< sophiatx::plugins::network_broadcast_api::network_broadcast_api_plugin >();
    
    appbase::app().register_plugin< sophiatx::plugins::database_api::database_api_plugin >();
+   
+   appbase::app().register_plugin< sophiatx::plugins::alexandria_api::alexandria_api_plugin >();
    
    appbase::app().register_plugin< sophiatx::plugins::chain::chain_api_plugin >();
    

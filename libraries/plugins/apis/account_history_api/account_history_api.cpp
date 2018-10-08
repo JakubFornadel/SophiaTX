@@ -1,5 +1,9 @@
 #include <sophiatx/plugins/account_history_api/account_history_api_plugin.hpp>
 #include <sophiatx/plugins/account_history_api/account_history_api.hpp>
+#include <appbase/application.hpp>
+#include <sophiatx/plugins/chain/chain_plugin.hpp>
+#include <sophiatx/plugins/json_rpc/json_rpc_plugin.hpp>
+
 
 namespace sophiatx { namespace plugins { namespace account_history {
 
@@ -63,7 +67,7 @@ DEFINE_API_IMPL( account_history_api_impl, get_account_history )
    const auto& idx = _db.get_index< chain::account_history_index, chain::by_account >();
    get_account_history_return result;
 
-   if(args.reverse_order && args.start >=0 ) {
+   if (args.reverse_order && args.start >=0 ) {
 
       auto itr = idx.find (boost::make_tuple(args.account, args.start ));
       auto end = idx.lower_bound( boost::make_tuple(args.account, args.start + args.limit ));
@@ -77,7 +81,7 @@ DEFINE_API_IMPL( account_history_api_impl, get_account_history )
          }
       }
 
-   }else if( !args.reverse_order ){
+   } else if ( !args.reverse_order ) {
 
       auto itr = idx.lower_bound(boost::make_tuple(args.account, args.start));
       auto end = idx.upper_bound(boost::make_tuple(args.account, std::max(int64_t(0), int64_t(itr->sequence) - args.limit)));
@@ -86,9 +90,13 @@ DEFINE_API_IMPL( account_history_api_impl, get_account_history )
          result.history[ itr->sequence ] = _db.get(itr->op);
          ++itr;
       }
-   }else{
+
+   } else {
+
       auto itr = idx.lower_bound(boost::make_tuple(args.account, uint64_t(0)-1 ));
-      while(result.history.size() < args.limit && itr!= idx.end() ) {
+      auto end = idx.upper_bound(boost::make_tuple(args.account, std::max(int64_t(0), int64_t(itr->sequence) - args.limit)));
+
+      while(result.history.size() < args.limit && itr != end ) {
          result.history[ itr->sequence ] = _db.get(itr->op);
          ++itr;
       }
