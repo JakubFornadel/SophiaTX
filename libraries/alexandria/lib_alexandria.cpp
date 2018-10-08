@@ -211,7 +211,7 @@ public:
    }
 
    fc::api< remote_node_api >              _remote_api;
-   uint32_t                                _tx_expiration_seconds = 30;
+   uint32_t                                _tx_expiration_seconds = 60 * 60; //one hour
    chain_id_type                           _chain_id;
 
 #ifdef __unix__
