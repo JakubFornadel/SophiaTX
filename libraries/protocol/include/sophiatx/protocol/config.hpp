@@ -29,9 +29,6 @@
 
 #define SOPHIATX_MIN_FEEDS                       1 //(SOPHIATX_MAX_WITNESSES/10) /// protects the network from conversions before price has been established
 
-/// Allows to limit number of total produced blocks.
-#define TESTNET_BLOCK_LIMIT                   (3000000)
-
 #else // IS LIVE SOPHIATX NETWORK
 
 #define SOPHIATX_BLOCKCHAIN_VERSION              ( version(1, 1, 0) )
